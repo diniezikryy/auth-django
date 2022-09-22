@@ -4,8 +4,9 @@ from rest_framework import permissions, status
 from django.contrib.auth.models import User
 from .serializers import UserSerializer
 
+
 class RegisterView(APIView):
-    permissions_classes = (permissions.AllowAny, )
+    permission_classes = (permissions.AllowAny, )
 
     def post(self, request):
         try:
@@ -20,7 +21,7 @@ class RegisterView(APIView):
             if password == re_password:
                 if len(password) >= 8:
                     if not User.objects.filter(username=username).exists():
-                        User.objects.create_user(
+                        user = User.objects.create_user(
                             first_name=first_name,
                             last_name=last_name,
                             username=username,
@@ -31,33 +32,33 @@ class RegisterView(APIView):
 
                         if User.objects.filter(username=username).exists():
                             return Response(
-                                {'success': 'Account created successfully!'},
-                                status = status.HTTP_201_CREATED
+                                {'success': 'Account created successfully'},
+                                status=status.HTTP_201_CREATED
                             )
                         else:
                             return Response(
-                                {'error': 'Something went wrong when trying to register account!'},
-                                status = status.HTTP_500_INTERNAL_SERVER_ERROR
+                                {'error': 'Something went wrong when trying to create account'},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR
                             )
                     else:
-                         return Response(
-                            {'error': 'Username already exists!'},
-                            status = status.HTTP_400_BAD_REQUEST
-                        )   
+                        return Response(
+                            {'error': 'Username already exists'},
+                            status=status.HTTP_400_BAD_REQUEST
+                        )
                 else:
                     return Response(
-                        {'error': 'Passwords must be at least 8 characters in length!'},
-                        status = status.HTTP_400_BAD_REQUEST
+                        {'error': 'Password must be at least 8 characters in length'},
+                        status=status.HTTP_400_BAD_REQUEST
                     )
             else:
                 return Response(
-                    {'error': 'Passwords do not match!'},
-                    status = status.HTTP_400_BAD_REQUEST
+                    {'error': 'Passwords do not match'},
+                    status=status.HTTP_400_BAD_REQUEST
                 )
         except:
             return Response(
-                {'error': 'Something went wrong when trying to register account!'},
-                status = status.HTTP_500_INTERNAL_SERVER_ERROR
+                {'error': 'Something went wrong when trying to register account'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
 class LoadUserView(APIView):
@@ -68,10 +69,11 @@ class LoadUserView(APIView):
 
             return Response(
                 {'user': user.data},
-                status = status.HTTP_200_OK
+                status=status.HTTP_200_OK
             )
         except:
             return Response(
-                {'error': 'Something went wrong when trying load user!'},
-                status = status.HTTP_500_INTERNAL_SERVER_ERROR
+                {'error': 'Something went wrong when trying to load user'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
