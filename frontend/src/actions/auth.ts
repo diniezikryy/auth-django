@@ -10,6 +10,8 @@ import {
   LOGOUT_FAILED,
   LOAD_USER_SUCCESS,
   LOAD_USER_FAILED,
+  AUTHENTICATED_SUCCESS,
+  AUTHENTICATED_FAILED,
 } from "./types";
 
 export const load_user = () => async (dispatch) => {
@@ -36,6 +38,32 @@ export const load_user = () => async (dispatch) => {
   } catch (err) {
     dispatch({
       type: LOAD_USER_FAILED,
+    });
+  }
+};
+
+export const checkAuthStatus = () => async (dispatch) => {
+  try {
+    const res = await fetch("/api/account/verify", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    if (res.status === 200) {
+      dispatch({
+        type: AUTHENTICATED_SUCCESS,
+      });
+      dispatch(load_user());
+    } else {
+      dispatch({
+        type: AUTHENTICATED_FAILED,
+      });
+    }
+  } catch (err) {
+    dispatch({
+      type: AUTHENTICATED_FAILED,
     });
   }
 };
