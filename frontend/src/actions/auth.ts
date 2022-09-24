@@ -12,6 +12,8 @@ import {
   LOAD_USER_FAILED,
   AUTHENTICATED_SUCCESS,
   AUTHENTICATED_FAILED,
+  REFRESH_SUCCESS,
+  REFRESH_FAILED,
 } from "./types";
 
 export const load_user = () => async (dispatch) => {
@@ -64,6 +66,32 @@ export const checkAuthStatus = () => async (dispatch) => {
   } catch (err) {
     dispatch({
       type: AUTHENTICATED_FAILED,
+    });
+  }
+};
+
+export const requestRefresh = () => async (dispatch) => {
+  try {
+    const res = await fetch("/api/account/refresh", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    if (res.status === 200) {
+      dispatch({
+        type: REFRESH_SUCCESS,
+      });
+      dispatch(checkAuthStatus());
+    } else {
+      dispatch({
+        type: REFRESH_FAILED,
+      });
+    }
+  } catch (err) {
+    dispatch({
+      type: REFRESH_FAILED,
     });
   }
 };

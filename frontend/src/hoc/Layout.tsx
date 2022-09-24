@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { checkAuthStatus } from "../actions/auth";
+import { requestRefresh } from "../actions/auth";
 import Head from "next/head";
 import Navbar from "../components/Navbar";
 
@@ -8,7 +8,8 @@ const Layout = ({ title, content, children }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     if (dispatch && dispatch !== null && dispatch !== undefined) {
-      dispatch(checkAuthStatus());
+      // Refreshes on every dispatch
+      dispatch(requestRefresh());
     }
   }, [dispatch]);
 
