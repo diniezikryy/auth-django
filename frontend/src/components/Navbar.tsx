@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Navbar = () => {
+  const router = useRouter();
   return (
     <nav className="navbar navbar-expand-lg bg-light">
       <div className="container-fluid">
@@ -21,9 +23,28 @@ const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="#">
-                Home
-              </a>
+              <Link href="/">
+                <a
+                  className={
+                    router.pathname === "/" ? "nav-link active" : "nav-link"
+                  }
+                >
+                  Home
+                </a>
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link href="/register">
+                <a
+                  className={
+                    router.pathname === "/register"
+                      ? "nav-link active"
+                      : "nav-link"
+                  }
+                >
+                  Register
+                </a>
+              </Link>
             </li>
           </ul>
         </div>
