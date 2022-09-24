@@ -8,7 +8,37 @@ import {
   LOGIN_FAILED,
   LOGOUT_SUCCESS,
   LOGOUT_FAILED,
+  LOAD_USER_SUCCESS,
+  LOAD_USER_FAILED,
 } from "./types";
+
+export const load_user = () => async (dispatch) => {
+  try {
+    const res = await fetch("/api/account/user", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    const data = await res.json();
+
+    if (res.status === 200) {
+      dispatch({
+        type: LOAD_USER_SUCCESS,
+        payload: data,
+      });
+    } else {
+      dispatch({
+        type: LOAD_USER_FAILED,
+      });
+    }
+  } catch (err) {
+    dispatch({
+      type: LOAD_USER_FAILED,
+    });
+  }
+};
 
 export const register = (
   first_name,
@@ -77,7 +107,7 @@ export const login = (username, password) => async (dispatch) => {
   });
 
   try {
-    const res = await fetch("api/account/login", {
+    const res = await fetch("/api/account/login", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -90,6 +120,8 @@ export const login = (username, password) => async (dispatch) => {
       dispatch({
         type: LOGIN_SUCCESS,
       });
+
+      dispatch(load_user());
     } else {
       dispatch({
         type: LOGIN_FAILED,
@@ -108,7 +140,7 @@ export const login = (username, password) => async (dispatch) => {
 
 export const logout = () => async (dispatch) => {
   try {
-    const res = await fetch("api/account/logout", {
+    const res = await fetch("/api/account/logout", {
       method: "POST",
       headers: {
         Accept: "application/json",
