@@ -2,10 +2,13 @@ import { useState } from "react";
 import Layout from "../hoc/Layout";
 import { useSelector, useDispatch } from "react-redux";
 import { register } from "../actions/auth";
-import Loader from "react-loader-spinner";
+import { Oval } from "react-loader-spinner";
+import { useRouter } from "next/router";
 
 const RegisterPage = () => {
+  const router = useRouter();
   const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const register_success = useSelector((state) => state.auth.register_success);
   const loading = useSelector((state) => state.auth.loading);
 
@@ -30,6 +33,14 @@ const RegisterPage = () => {
         register(first_name, last_name, username, password, re_password)
       );
   };
+
+  if (typeof window !== "undefined" && isAuthenticated) {
+    router.push("/dashboard");
+  }
+
+  if (register_success) {
+    router.push("/login");
+  }
 
   return (
     <Layout
@@ -110,7 +121,13 @@ const RegisterPage = () => {
             required
           />
         </div>
-        <button className="btn btn-primary mt-5">Create Account</button>
+        {loading ? (
+          <div className="d-flex justify-content-center align-items-center mt-5">
+            <Oval color="#00bfff" width={50} height={50} />
+          </div>
+        ) : (
+          <button className="btn btn-primary mt-5">Create Account</button>
+        )}
       </form>
     </Layout>
   );

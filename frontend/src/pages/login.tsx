@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Layout from "../hoc/Layout";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import { register } from "../actions/auth";
-import Loader from "react-loader-spinner";
+import { login, reset_register_success } from "../actions/auth";
+import { Oval } from "react-loader-spinner";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -18,16 +18,25 @@ const LoginPage = () => {
 
   const { username, password } = formData;
 
+  useEffect(() => {
+    if (dispatch && dispatch !== null && dispatch !== undefined) {
+      dispatch(reset_register_success());
+    }
+  }, []);
+
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSubmit = (e) => {
     e.preventDefault();
 
-    if (typeof window !== "undefined" && isAuthenticated) {
-      router.push("/dashboard");
+    if (dispatch && dispatch !== null && dispatch !== undefined) {
+      dispatch(login(username, password));
     }
   };
+
+  if (typeof window !== "undefined" && isAuthenticated)
+    router.push("/dashboard");
 
   return (
     <Layout title="Kanbanapp | Login" content="Login page for the kanbanapp">
@@ -63,7 +72,13 @@ const LoginPage = () => {
             required
           />
         </div>
-        <button className="btn btn-primary mt-5">Log in</button>
+        {loading ? (
+          <div className="d-flex justify-content-center align-items-center mt-5">
+            <Oval color="#00bfff" width={50} height={50} />
+          </div>
+        ) : (
+          <button className="btn btn-primary mt-5">Log in</button>
+        )}
       </form>
     </Layout>
   );
