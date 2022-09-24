@@ -96,7 +96,6 @@ const RegisterPage = () => {
             required
           />
         </div>
-
         <div className="form-group">
           <label htmlFor="re_password" className="form-label mt-3">
             <strong>Confirm Password*</strong>

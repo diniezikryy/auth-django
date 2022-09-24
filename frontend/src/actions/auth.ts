@@ -25,6 +25,7 @@ export const register = (
   });
 
   try {
+    // send to django endpoint
     const res = await fetch("/api/account/register", {
       method: "POST",
       headers: {
