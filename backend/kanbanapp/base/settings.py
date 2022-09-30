@@ -26,7 +26,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'kanbanapp',
     'rest_framework',
     'corsheaders',
     'rest_framework_simplejwt.token_blacklist'
@@ -70,12 +69,12 @@ WSGI_APPLICATION = 'base.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'railway',
         'USER': 'postgres',
-        'PASSWORD': 'Dzrdin2305*',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'PASSWORD': 'VGeT4Pd9AjjwspGZSwWT',
+        'HOST': 'containers-us-west-82.railway.app',
+        'PORT': '7938',
     }
 }
 
