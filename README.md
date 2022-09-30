@@ -1,1 +1,1 @@
-# kanban-task-management
+# auth-django-template
